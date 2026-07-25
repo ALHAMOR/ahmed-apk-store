@@ -68,36 +68,73 @@
     return response.json();
   }
 
-  function uploadAsset(uploadUrl, file, token) {
+  function uploadAssetOnce(uploadUrl, file, token, attempt) {
     return new Promise((resolve, reject) => {
-      const url = uploadUrl.replace(/\{\?name,label\}$/, "") + `?name=${encodeURIComponent(file.name)}&label=${encodeURIComponent(file.name)}`;
+      const baseUrl = uploadUrl.replace(/\{\?name,label\}$/, "");
+      const url = `${baseUrl}?name=${encodeURIComponent(file.name)}`;
       const xhr = new XMLHttpRequest();
+
       xhr.open("POST", url, true);
+      xhr.withCredentials = false;
+      xhr.timeout = 30 * 60 * 1000;
+
+      // ترويسات الرفع الرسمية. لا نرسل X-GitHub-Api-Version هنا
+      // لتجنب رفض طلب CORS التمهيدي في uploads.github.com.
       xhr.setRequestHeader("Accept", "application/vnd.github+json");
       xhr.setRequestHeader("Authorization", `Bearer ${token}`);
-      xhr.setRequestHeader("X-GitHub-Api-Version", cfg.apiVersion);
-      xhr.setRequestHeader("Content-Type", "application/vnd.android.package-archive");
+      xhr.setRequestHeader("Content-Type", "application/octet-stream");
 
       xhr.upload.onprogress = event => {
         if (event.lengthComputable) {
           const pct = (event.loaded / event.total) * 100;
-          setProgress(pct, `جاري رفع ${file.name}`);
+          const retryText = attempt > 1 ? ` — المحاولة ${attempt}` : "";
+          setProgress(pct, `جاري رفع ${file.name}${retryText}`);
         }
       };
+
       xhr.onload = () => {
         if (xhr.status >= 200 && xhr.status < 300) {
           try { resolve(JSON.parse(xhr.responseText)); }
           catch { resolve({}); }
-        } else {
-          let message = `فشل رفع الملف: ${xhr.status}`;
-          try { message = JSON.parse(xhr.responseText).message || message; } catch {}
-          reject(new Error(message));
+          return;
         }
+
+        let message = `فشل رفع الملف: خطأ ${xhr.status}`;
+        try {
+          const data = JSON.parse(xhr.responseText);
+          message = data.message || message;
+        } catch {}
+        reject(new Error(message));
       };
-      xhr.onerror = () => reject(new Error("انقطع الاتصال أثناء رفع الملف."));
+
+      xhr.onerror = () => reject(new Error(
+        "تعذر الوصول إلى خادم رفع GitHub. قد يكون المتصفح أو مانع الإعلانات قد حظر uploads.github.com."
+      ));
+      xhr.ontimeout = () => reject(new Error("انتهت مهلة رفع الملف."));
       xhr.onabort = () => reject(new Error("تم إلغاء رفع الملف."));
       xhr.send(file);
     });
+  }
+
+  async function uploadAsset(uploadUrl, file, token) {
+    const delays = [0, 2500, 6000];
+    let lastError;
+
+    for (let attempt = 1; attempt <= delays.length; attempt++) {
+      if (delays[attempt - 1]) {
+        setProgress(5, `إعادة محاولة الرفع ${attempt} من ${delays.length}…`);
+        await new Promise(resolve => setTimeout(resolve, delays[attempt - 1]));
+      }
+
+      try {
+        return await uploadAssetOnce(uploadUrl, file, token, attempt);
+      } catch (error) {
+        lastError = error;
+        console.warn(`Upload attempt ${attempt} failed`, error);
+      }
+    }
+
+    throw lastError || new Error("تعذر رفع الملف بعد عدة محاولات.");
   }
 
   els.file.addEventListener("change", () => {
