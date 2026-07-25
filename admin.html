@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#0b1220">
   <meta name="robots" content="noindex,nofollow">
-  <title>لوحة رفع التطبيقات | تطبيقات أحمد</title>
+  <meta http-equiv="refresh" content="4;url=https://github.com/ALHAMOR/ahmed-apk-store/releases/new">
+  <title>إضافة تطبيق | تطبيقات أحمد</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body class="admin-page">
@@ -14,7 +15,7 @@
       <a class="brand" href="./">
         <span class="brand-icon">A</span>
         <span>
-          <strong>لوحة رفع التطبيقات</strong>
+          <strong>إضافة تطبيق</strong>
           <small>GitHub Releases</small>
         </span>
       </a>
@@ -23,95 +24,24 @@
   </header>
 
   <main class="container admin-main">
-    <div class="security-note">
-      <strong>تنبيه أمان:</strong>
-      لا تضع مفتاح GitHub داخل ملفات الموقع أو المستودع. أدخله هنا فقط؛ الحفظ الدائم متوقف افتراضيًا.
-    </div>
-
     <section class="admin-card">
-      <h1>رفع تطبيق APK</h1>
-      <p class="muted">سيُنشأ إصدار GitHub مخفي أولًا، ثم يُنشر تلقائيًا بعد اكتمال رفع الملف.</p>
+      <h1>إضافة تطبيق جديد</h1>
+      <p class="muted">
+        لأسباب أمنية، يتم رفع ملفات APK من صفحة GitHub Releases الرسمية.
+        لا تحتاج إلى مفتاح وصول داخل الموقع.
+      </p>
 
-      <form id="uploadForm">
-        <div class="form-grid">
-          <label class="field full">
-            <span>مفتاح GitHub الخاص</span>
-            <input id="token" type="password" placeholder="github_pat_…" required autocomplete="off">
-            <small>يحتاج صلاحية Contents: Read and write لهذا المستودع فقط.</small>
-          </label>
+      <a class="download-btn"
+         href="https://github.com/ALHAMOR/ahmed-apk-store/releases/new"
+         target="_blank"
+         rel="noopener noreferrer">
+        فتح صفحة رفع تطبيق جديد
+      </a>
 
-          <label class="check-row full">
-            <input id="rememberToken" type="checkbox">
-            <span>حفظ المفتاح على هذا الجهاز</span>
-          </label>
-
-          <label class="field">
-            <span>اسم التطبيق</span>
-            <input id="appName" type="text" placeholder="مثال: BlueCast" maxlength="80" required>
-          </label>
-
-          <label class="field">
-            <span>رقم الإصدار</span>
-            <input id="version" type="text" placeholder="مثال: 1.0.0" maxlength="40" required>
-          </label>
-
-          <label class="field">
-            <span>التصنيف</span>
-            <select id="category">
-              <option>Android TV</option>
-              <option>AirPlay</option>
-              <option>متصفحات</option>
-              <option>مدير ملفات</option>
-              <option>أدوات</option>
-              <option>Android</option>
-              <option>أخرى</option>
-            </select>
-          </label>
-
-          <label class="field">
-            <span>رابط صورة التطبيق — اختياري</span>
-            <input id="iconUrl" type="url" placeholder="https://…">
-          </label>
-
-          <label class="field full">
-            <span>وصف مختصر</span>
-            <textarea id="description" rows="4" maxlength="500" placeholder="اكتب وصف التطبيق ومميزاته…" required></textarea>
-          </label>
-
-          <label class="file-picker full">
-            <input id="apkFile" type="file" accept=".apk,application/vnd.android.package-archive" required>
-            <span id="fileLabel">اضغط لاختيار ملف APK</span>
-            <small>الحد الأقصى لملف Release Asset هو أقل من 2 GiB.</small>
-          </label>
-        </div>
-
-        <div id="progressBox" class="progress-box" hidden>
-          <div class="progress-head">
-            <span id="progressText">بدء الرفع…</span>
-            <strong id="progressPercent">0%</strong>
-          </div>
-          <div class="progress-track"><div id="progressBar"></div></div>
-        </div>
-
-        <div id="adminMessage" class="status" hidden></div>
-
-        <button id="uploadBtn" class="primary-btn" type="submit">رفع التطبيق ونشره</button>
-      </form>
-    </section>
-
-    <section class="admin-card">
-      <div class="section-head">
-        <div>
-          <h2>إدارة التطبيقات المنشورة</h2>
-          <p class="muted">أدخل المفتاح أعلاه ثم اضغط تحديث القائمة.</p>
-        </div>
-        <button id="loadReleasesBtn" class="secondary-btn" type="button">تحديث القائمة</button>
-      </div>
-      <div id="releaseList" class="release-list"></div>
+      <p class="muted" style="margin-top:16px">
+        سيتم تحويلك تلقائيًا خلال بضع ثوانٍ.
+      </p>
     </section>
   </main>
-
-  <script src="config.js"></script>
-  <script src="admin.js"></script>
 </body>
 </html>
