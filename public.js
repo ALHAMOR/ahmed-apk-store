@@ -32,7 +32,9 @@
   }
 
   function cleanDescription(body = "") {
-    return body.replace(/<!--AHMED_APK_META:[\s\S]*?-->/g, "").trim();
+    const clean = body.replace(/<!--AHMED_APK_META:[\s\S]*?-->/g, "").trim();
+    // نعرض أول فقرة فقط داخل البطاقة، وتبقى بقية التفاصيل في صفحة Release.
+    return clean.split(/\n\s*\n/)[0].trim();
   }
 
   async function loadApps() {
@@ -137,7 +139,6 @@
           <div class="meta-row">
             <span>${humanSize(app.size)}</span>
             <span>${Number(app.downloads || 0).toLocaleString("ar-SA")} تنزيل</span>
-            <span>${escapeHtml(date)}</span>
           </div>
           <a class="download-btn" href="${escapeHtml(app.url)}" download>تحميل APK مباشر</a>
         </article>`;
