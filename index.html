@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b1220">
+  <meta name="description" content="متجر تطبيقات أحمد لتحميل ملفات APK مباشرة">
+  <title>تطبيقات أحمد | تحميل APK مباشر</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="./" aria-label="الصفحة الرئيسية">
+        <span class="brand-icon">A</span>
+        <span>
+          <strong>تطبيقات أحمد</strong>
+          <small>تحميل APK مباشر</small>
+        </span>
+      </a>
+      <a class="admin-link" href="admin.html">لوحة الرفع</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <p class="eyebrow">ANDROID &amp; ANDROID TV</p>
+        <h1>تطبيقات مختارة بروابط تحميل مباشرة</h1>
+        <p>نزّل ملفات APK بسرعة من GitHub Releases، دون صفحات إعلانات أو روابط مختصرة.</p>
+
+        <div class="search-wrap">
+          <input id="searchInput" type="search" placeholder="ابحث باسم التطبيق أو التصنيف…" autocomplete="off">
+          <button id="refreshBtn" type="button">تحديث</button>
+        </div>
+
+        <div id="categories" class="categories" aria-label="التصنيفات"></div>
+      </div>
+    </section>
+
+    <section class="container apps-section">
+      <div class="section-head">
+        <div>
+          <h2>التطبيقات</h2>
+          <p id="resultCount">جاري التحميل…</p>
+        </div>
+      </div>
+
+      <div id="status" class="status loading">جاري جلب التطبيقات من GitHub…</div>
+      <div id="appsGrid" class="apps-grid" hidden></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">© <span id="year"></span> تطبيقات أحمد</div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="public.js"></script>
+</body>
+</html>
